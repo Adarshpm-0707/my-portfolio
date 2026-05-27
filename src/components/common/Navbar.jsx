@@ -1,185 +1,254 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Code2 } from 'lucide-react';
+import { Menu, X, ArrowRight, Palette } from 'lucide-react';
+import { useTheme, themesConfig } from '../../context/ThemeContext';
 
 const navLinks = [
   { name: 'Home', path: '/' },
   { name: 'Skills', path: '/skills' },
   { name: 'Experience', path: '/experience' },
   { name: 'Projects', path: '/projects' },
-
 ];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hoveredPath, setHoveredPath] = useState(null);
+  const [isThemeOpen, setIsThemeOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Prevent background scroll when mobile menu is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
-
-  const menuVariants = {
-    closed: {
-      opacity: 0,
-      y: "-100%",
-      transition: {
-        duration: 0.5,
-        ease: [0.22, 1, 0.36, 1],
-        staggerChildren: 0.05,
-        staggerDirection: -1,
-      }
-    },
-    open: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1],
-        staggerChildren: 0.08,
-        delayChildren: 0.1,
-      }
-    }
-  };
-
-  const itemVariants = {
-    closed: { opacity: 0, y: -20 },
-    open: { opacity: 1, y: 0 }
-  };
-
   return (
-    <>
-      <nav
-        className={`fixed left-1/2 -translate-x-1/2 z-[100] transition-all duration-500 ease-out ${
-          scrolled
-            ? 'top-4 w-[94%] lg:w-[92%] max-w-6xl px-4 sm:px-6 py-3 rounded-2xl glass-premium shadow-2xl border border-white/10'
-            : 'top-0 w-full px-4 sm:px-8 py-6 bg-transparent border-b border-transparent'
+    <header className="fixed top-0 left-0 w-full z-[100] px-3 py-4 sm:px-4 sm:py-6 pointer-events-none">
+      <nav 
+        className={`mx-auto max-w-5xl pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+          scrolled 
+          ? 'bg-black/40 backdrop-blur-xl py-2 px-3 rounded-full border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)]' 
+          : 'bg-black/25 backdrop-blur-xl py-2.5 px-3 rounded-full border border-white/10 sm:bg-transparent sm:py-4 sm:px-6 sm:rounded-none sm:border-transparent sm:backdrop-blur-none'
         }`}
       >
-        <div className="mx-auto flex justify-between items-center w-full">
-          <Link to="/" className="flex items-center gap-2 sm:gap-3 group shrink-0">
-            <motion.div 
-              whileHover={{ rotate: 10, scale: 1.1 }}
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center glow-blue transition-all shrink-0"
-            >
-              <Code2 className="text-white w-4.5 h-4.5 sm:w-5 sm:h-5" />
-            </motion.div>
-            <span className="text-sm sm:text-base md:text-lg font-black font-orbitron tracking-wider text-white group-hover:text-accent-blue transition-colors whitespace-nowrap">
-              ADARSH<span className="text-accent-blue">.DEV</span>
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="relative">
+              <div className="absolute inset-0 bg-accent-blue/20 blur-lg rounded-full group-hover:bg-accent-blue/40 transition-all" />
+              
+            </div>
+            <span className="text-white font-orbitron font-bold tracking-tighter text-base sm:text-xl">
+              AASSHH<span className="text-accent-blue">.DEV</span>
             </span>
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-5 xl:gap-8 shrink-0">
+          {/* Desktop Links */}
+          <div className="hidden lg:flex items-center bg-white/5 rounded-full px-2 py-1 border border-white/5 relative">
             {navLinks.map((link) => {
-              const active = link.path === '/' 
-                ? location.pathname === '/' && location.hash === '' 
-                : link.path === '/#about'
-                ? location.pathname === '/' && location.hash === '#about'
-                : location.pathname === link.path;
-
+              const isActive = location.pathname === link.path;
               return (
                 <Link
-                  key={link.name}
+                  key={link.path}
                   to={link.path}
-                  className={`relative font-medium text-xs tracking-widest uppercase transition-colors hover:text-accent-blue py-1 ${
-                    active ? 'text-accent-blue' : 'text-gray-300'
+                  onMouseEnter={() => setHoveredPath(link.path)}
+                  onMouseLeave={() => setHoveredPath(null)}
+                  className={`relative px-5 py-2 text-xs font-bold uppercase tracking-widest transition-colors duration-300 z-10 ${
+                    isActive ? 'text-white' : 'text-gray-400 hover:text-white'
                   }`}
                 >
                   {link.name}
-                  {active && (
+                  {(hoveredPath === link.path || isActive) && (
                     <motion.div
-                      layoutId="nav-underline"
-                      className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-accent-blue to-accent-purple"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      layoutId="nav-pill"
+                      className="absolute inset-0 bg-gradient-to-r from-accent-blue/20 to-accent-purple/20 rounded-full -z-10 border border-white/10"
+                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                     />
                   )}
                 </Link>
               );
             })}
-            <Link
-              to="/contact"
-              className="relative overflow-hidden px-5 py-2 sm:px-6 sm:py-2.5 rounded-xl bg-gradient-to-r from-accent-blue to-accent-purple text-white font-bold text-xs uppercase tracking-widest hover:scale-105 transition-all glow-blue group shrink-0"
-            >
-              <span className="relative z-10">Hire Me</span>
-              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
-            </Link>
           </div>
 
-          {/* Mobile Toggle */}
-          <motion.button 
-            whileTap={{ scale: 0.9 }}
-            className="lg:hidden text-white w-9 h-9 sm:w-10 sm:h-10 rounded-xl glass flex items-center justify-center border border-white/10 hover:bg-white/5 transition-colors shrink-0"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={18} /> : <Menu size={18} />}
-          </motion.button>
+          {/* Theme Selector + CTA Button */}
+          <div className="flex items-center gap-2.5 sm:gap-4 z-50">
+            {/* Desktop Theme Switcher */}
+            <div className="relative">
+              <button
+                onClick={() => setIsThemeOpen(!isThemeOpen)}
+                className="p-2 sm:p-2.5 rounded-full bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 border border-white/5 active:scale-95 transition-all flex items-center justify-center cursor-pointer pointer-events-auto"
+                aria-label="Change theme"
+              >
+                <Palette size={15} />
+              </button>
+
+              <AnimatePresence>
+                {isThemeOpen && (
+                  <>
+                    <div className="fixed inset-0 z-10 pointer-events-auto" onClick={() => setIsThemeOpen(false)} />
+                    <motion.div
+                      initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                      transition={{ type: 'spring', damping: 22, stiffness: 300 }}
+                      className="absolute right-0 mt-3.5 w-56 z-20 glass-premium border border-white/15 rounded-2xl p-2.5 flex flex-col gap-1 shadow-[0_12px_40px_rgba(0,0,0,0.5)] pointer-events-auto"
+                    >
+                      <div className="text-[9px] font-orbitron font-bold uppercase tracking-[0.2em] text-gray-500 px-2 py-1 select-none">
+                        SYSTEM PALETTE
+                      </div>
+                      {Object.entries(themesConfig).map(([themeKey, config]) => {
+                        const isSelected = theme === themeKey;
+                        return (
+                          <button
+                            key={themeKey}
+                            onClick={() => {
+                              setTheme(themeKey);
+                              setIsThemeOpen(false);
+                            }}
+                            className={`w-full text-left rounded-xl p-2 transition-all duration-300 flex items-center justify-between hover:bg-white/5 group border cursor-pointer ${
+                              isSelected ? 'border-accent-blue/20 bg-accent-blue/5 text-white' : 'border-transparent text-gray-400'
+                            }`}
+                          >
+                            <div className="flex flex-col">
+                              <span className={`text-[11px] font-bold font-orbitron uppercase group-hover:text-white ${isSelected ? 'text-accent-blue' : ''}`}>
+                                {config.name}
+                              </span>
+                              <div className="flex gap-1 mt-1">
+                                {config.swatches.map((color, cIdx) => (
+                                  <span
+                                    key={cIdx}
+                                    className="w-2.5 h-2.5 rounded-full border border-black/40"
+                                    style={{ backgroundColor: color }}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                            {isSelected && (
+                              <div className="w-1.5 h-1.5 rounded-full bg-accent-blue glow-blue" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <Link
+              to="/contact"
+              className="hidden sm:flex items-center gap-2 px-5 py-2 rounded-full bg-white text-black text-xs font-black uppercase tracking-tighter hover:bg-accent-blue hover:text-white transition-all duration-300 group pointer-events-auto"
+            >
+              Hire Me
+              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+
+            {/* Mobile Toggle */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="lg:hidden p-2.5 text-white bg-white/5 rounded-full border border-white/10 active:scale-95 transition-transform"
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+            >
+              {isOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Backdrop & Overlay */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial="closed"
-            animate="open"
-            exit="closed"
-            variants={menuVariants}
-            className="fixed inset-0 z-[99] lg:hidden bg-[#030303]/95 backdrop-blur-2xl flex flex-col justify-center items-center px-6"
-          >
-            <div className="flex flex-col gap-6 text-center w-full max-w-sm">
-              {navLinks.map((link) => {
-                const active = link.path === '/' 
-                  ? location.pathname === '/' && location.hash === '' 
-                  : link.path === '/#about'
-                  ? location.pathname === '/' && location.hash === '#about'
-                  : location.pathname === link.path;
-
-                return (
-                  <motion.div key={link.name} variants={itemVariants}>
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[-1] pointer-events-auto"
+            />
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 h-full w-[min(88vw,330px)] bg-[#08080b]/95 backdrop-blur-2xl border-l border-white/10 z-[101] p-6 sm:p-8 pointer-events-auto flex flex-col shadow-[-24px_0_60px_rgba(0,0,0,0.45)]"
+            >
+              <div className="flex items-center justify-between mb-10">
+                <span className="text-white/40 font-orbitron text-[10px] uppercase tracking-[0.3em]">Menu</span>
+                <button onClick={() => setIsOpen(false)} className="text-white p-2 bg-white/5 border border-white/10 rounded-full" aria-label="Close menu">
+                  <X size={24} />
+                </button>
+              </div>
+              
+              <div className="flex flex-col gap-3">
+                {navLinks.map((link, i) => (
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                  >
                     <Link
                       to={link.path}
                       onClick={() => setIsOpen(false)}
-                      className={`block text-2xl font-black font-orbitron tracking-widest uppercase py-2 hover:text-accent-blue transition-colors ${
-                        active ? 'text-accent-blue text-gradient' : 'text-white'
+                      className={`flex items-center justify-between rounded-2xl border px-4 py-4 font-orbitron text-xl font-bold transition-colors ${
+                        location.pathname === link.path ? 'border-accent-blue/30 bg-accent-blue/10 text-accent-blue' : 'border-white/5 bg-white/[0.03] text-white'
                       }`}
                     >
                       {link.name}
+                      <ArrowRight size={16} className="opacity-50" />
                     </Link>
                   </motion.div>
-                );
-              })}
-              <motion.div variants={itemVariants} className="mt-8">
+                ))}
+              </div>
+
+              {/* Theme Selector for Mobile */}
+              <div className="mt-6 pt-5 border-t border-white/5 flex flex-col gap-2.5">
+                <span className="text-white/40 font-orbitron text-[9px] uppercase tracking-[0.25em]">System Palette</span>
+                <div className="grid grid-cols-5 gap-1.5">
+                  {Object.entries(themesConfig).map(([themeKey, config]) => {
+                    const isSelected = theme === themeKey;
+                    return (
+                      <button
+                        key={themeKey}
+                        onClick={() => setTheme(themeKey)}
+                        className={`aspect-square rounded-xl flex items-center justify-center border transition-all cursor-pointer ${
+                          isSelected ? 'border-accent-blue bg-accent-blue/10 scale-105' : 'border-white/5 bg-white/[0.02]'
+                        }`}
+                        title={config.name}
+                      >
+                        <span 
+                          className="w-4.5 h-4.5 rounded-full border border-black/30 shadow-md"
+                          style={{ backgroundColor: config.swatches[0] }}
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="mt-6"
+              >
                 <Link
                   to="/contact"
                   onClick={() => setIsOpen(false)}
-                  className="block w-full py-4 rounded-xl bg-gradient-to-r from-accent-blue to-accent-purple text-white font-black text-center uppercase tracking-widest shadow-lg glow-blue"
+                  className="block w-full py-4 bg-accent-blue text-white text-center font-black rounded-2xl shadow-[0_0_20px_rgba(45,212,191,0.28)]"
                 >
-                  Hire Me
+                  START A PROJECT
                 </Link>
               </motion.div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
-    </>
+    </header>
   );
 };
 

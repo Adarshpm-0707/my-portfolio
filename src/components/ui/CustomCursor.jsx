@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, useSpring } from 'framer-motion';
 
 /* Trail dot — individual fading particle */
@@ -16,8 +16,8 @@ const TrailDot = ({ x, y, age, maxAge }) => {
         width:  size,
         height: size,
         borderRadius: '50%',
-        background: isBlue ? '#00d2ff' : '#9d50bb',
-        boxShadow: `0 0 ${size * 2}px ${isBlue ? '#00d2ff' : '#9d50bb'}`,
+        background: isBlue ? '#2dd4bf' : '#f4b860',
+        boxShadow: `0 0 ${size * 2}px ${isBlue ? '#2dd4bf' : '#f4b860'}`,
         opacity,
         pointerEvents: 'none',
         zIndex: 9997,
@@ -31,7 +31,12 @@ const TRAIL_LENGTH = 18;
 const MAX_AGE      = TRAIL_LENGTH;
 
 const CustomCursor = () => {
-  const [isTouchDevice, setIsTouchDevice] = useState(true);
+  const [isTouchDevice, setIsTouchDevice] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(pointer: coarse)').matches;
+    }
+    return true;
+  });
   const [isHovering, setIsHovering]       = useState(false);
   const [trail, setTrail]                 = useState([]);
   const mousePos = useRef({ x: 0, y: 0 });
@@ -42,21 +47,19 @@ const CustomCursor = () => {
   const cursorX = useSpring(0, springConfig);
   const cursorY = useSpring(0, springConfig);
 
-  /* ── Animate trail ages each frame ── */
-  const animateTrail = useCallback(() => {
-    trailRef.current = trailRef.current
-      .map(dot => ({ ...dot, age: dot.age + 1 }))
-      .filter(dot => dot.age < MAX_AGE);
-    setTrail([...trailRef.current]);
-    rafId.current = requestAnimationFrame(animateTrail);
-  }, []);
-
   useEffect(() => {
     const touchQuery = window.matchMedia('(pointer: coarse)');
-    setIsTouchDevice(touchQuery.matches);
     const listener = (e) => setIsTouchDevice(e.matches);
     touchQuery.addEventListener('change', listener);
     if (touchQuery.matches) return;
+
+    const animateTrail = () => {
+      trailRef.current = trailRef.current
+        .map(dot => ({ ...dot, age: dot.age + 1 }))
+        .filter(dot => dot.age < MAX_AGE);
+      setTrail([...trailRef.current]);
+      rafId.current = requestAnimationFrame(animateTrail);
+    };
 
     rafId.current = requestAnimationFrame(animateTrail);
 
@@ -96,7 +99,7 @@ const CustomCursor = () => {
       observer.disconnect();
       if (rafId.current) cancelAnimationFrame(rafId.current);
     };
-  }, [cursorX, cursorY, animateTrail]);
+  }, [cursorX, cursorY]);
 
   if (isTouchDevice) return null;
 
@@ -117,11 +120,11 @@ const CustomCursor = () => {
           width: 32,
           height: 32,
           borderRadius: '50%',
-          border: `2px solid ${isHovering ? '#9d50bb' : '#00d2ff'}`,
-          backgroundColor: isHovering ? 'rgba(0,210,255,0.1)' : 'transparent',
+          border: `2px solid ${isHovering ? '#f4b860' : '#2dd4bf'}`,
+          backgroundColor: isHovering ? 'rgba(45, 212, 191,0.1)' : 'transparent',
           boxShadow: isHovering
-            ? '0 0 18px rgba(157,80,187,0.6), inset 0 0 8px rgba(157,80,187,0.3)'
-            : '0 0 10px rgba(0,210,255,0.4)',
+            ? '0 0 18px rgba(244, 184, 96,0.6), inset 0 0 8px rgba(244, 184, 96,0.3)'
+            : '0 0 10px rgba(45, 212, 191,0.4)',
           scale: isHovering ? 1.6 : 1,
           transition: 'border-color 0.2s, box-shadow 0.2s, background 0.2s',
         }}
@@ -139,8 +142,8 @@ const CustomCursor = () => {
           width: 8,
           height: 8,
           borderRadius: '50%',
-          background: isHovering ? '#9d50bb' : '#00d2ff',
-          boxShadow: `0 0 8px ${isHovering ? '#9d50bb' : '#00d2ff'}`,
+          background: isHovering ? '#f4b860' : '#2dd4bf',
+          boxShadow: `0 0 8px ${isHovering ? '#f4b860' : '#2dd4bf'}`,
           scale: isHovering ? 0 : 1,
         }}
       />

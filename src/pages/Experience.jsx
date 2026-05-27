@@ -1,6 +1,5 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { Briefcase, Calendar, MapPin, ExternalLink } from 'lucide-react';
+import { Calendar, MapPin, ExternalLink } from 'lucide-react';
 
 const Experience = () => {
   const experiences = [
@@ -86,7 +85,7 @@ const Experience = () => {
                   <div className="flex items-center gap-3">
                     <h3 className="text-xl sm:text-2xl font-bold font-orbitron text-white group-hover:text-accent-blue transition-colors">{exp.company}</h3>
                     <motion.a 
-                      whileHover={{ scale: 1.1, color: '#00d2ff' }}
+                      whileHover={{ scale: 1.1, color: 'var(--accent-blue)' }}
                       href={exp.link} 
                       className="text-gray-500 hover:text-white transition-colors"
                       aria-label={`Visit ${exp.company}`}
