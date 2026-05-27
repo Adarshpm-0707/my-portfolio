@@ -79,7 +79,7 @@ const About = () => {
     <section 
       ref={containerRef}
       id="about" 
-      className="py-24 px-4 sm:px-12 max-w-7xl mx-auto scroll-mt-24 relative z-10 font-sans"
+      className="py-20 sm:py-24 px-4 sm:px-8 lg:px-12 max-w-6xl mx-auto scroll-mt-24 relative z-10 font-sans"
     >
       
       {/* Section title */}
@@ -87,12 +87,12 @@ const About = () => {
         initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="mb-12 text-center lg:text-left"
+        className="mb-8 sm:mb-12 text-center lg:text-left"
       >
         <span className="text-accent-blue font-orbitron font-bold tracking-[0.3em] mb-2 block text-xs sm:text-sm uppercase">
           // 02 // IDENTITY_DATABASE
         </span>
-        <h2 className="text-3xl sm:text-5xl font-black font-orbitron text-white">SYSTEM_BACKGROUND</h2>
+        <h2 className="text-[1.85rem] leading-tight sm:text-5xl font-black font-orbitron text-white break-words">SYSTEM_BACKGROUND</h2>
       </motion.div>
 
       {/* VS Code Window Container */}
@@ -101,11 +101,11 @@ const About = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="w-full rounded-2xl border border-white/10 bg-[#0d0d11]/90 shadow-2xl overflow-hidden glass-premium flex flex-col"
+        className="flex w-full rounded-2xl border border-white/10 bg-[#0d0d11]/90 shadow-2xl overflow-hidden glass-premium flex-col"
       >
         
         {/* VS Code Title Bar */}
-        <div className="flex items-center justify-between bg-[#08080b] px-4 py-3 border-b border-white/5 select-none">
+        <div className="flex items-center justify-between bg-[#08080b] px-3 sm:px-4 py-3 border-b border-white/5 select-none">
           {/* macOS traffic light window buttons */}
           <div className="flex gap-2">
             <span className="w-3 h-3 rounded-full bg-[#ff5f56] opacity-80" />
@@ -113,7 +113,7 @@ const About = () => {
             <span className="w-3 h-3 rounded-full bg-[#27c93f] opacity-80" />
           </div>
           {/* Centered Document Title */}
-          <div className="text-[11px] text-gray-500 font-mono truncate max-w-xs sm:max-w-md">
+          <div className="text-[10px] sm:text-[11px] text-gray-500 font-mono truncate max-w-[12rem] sm:max-w-[18rem] lg:max-w-md">
             developer.json - portfolio - Visual Studio Code
           </div>
           {/* Spacer */}
@@ -121,10 +121,10 @@ const About = () => {
         </div>
 
         {/* IDE Main Area */}
-        <div className="flex flex-1 min-h-[500px]">
+        <div className="flex flex-1 min-h-[420px] sm:min-h-[440px] lg:min-h-[500px]">
           
-          {/* Left Navigation Bar (Activity Bar) - Hidden on extra small mobile */}
-          <div className="hidden xs:flex flex-col justify-between items-center bg-[#07070a] py-4 w-12 border-r border-white/5 text-gray-500">
+          {/* Left Navigation Bar (Activity Bar) */}
+          <div className="hidden md:flex flex-col justify-between items-center bg-[#0b0f14] py-4 w-12 border-r border-white/5 text-gray-500">
             <div className="flex flex-col gap-6 w-full items-center">
               <button 
                 onClick={() => setIsExplorerOpen(!isExplorerOpen)}
@@ -151,7 +151,7 @@ const About = () => {
                 animate={{ width: 200, opacity: 1 }}
                 exit={{ width: 0, opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                className="hidden md:flex flex-col bg-[#09090c] border-r border-white/5 font-mono text-xs select-none overflow-hidden"
+                className="hidden xl:flex flex-col bg-[#09090c] border-r border-white/5 font-mono text-xs select-none overflow-hidden"
               >
                 <div className="p-3 text-[10px] uppercase font-bold text-gray-500 tracking-wider">
                   Explorer: Portfolio
@@ -206,8 +206,8 @@ const About = () => {
           <div className="flex-1 flex flex-col bg-[#0b0b0e] overflow-hidden">
             
             {/* Editor Active Tab Bar */}
-            <div className="flex bg-[#08080a] border-b border-white/5 text-[11px] font-mono select-none">
-              <div className="flex items-center gap-2 bg-[#0b0b0e] px-4 py-2 border-t border-accent-blue text-white border-r border-white/5 cursor-pointer">
+            <div className="flex bg-[#08080a] border-b border-white/5 text-[10px] sm:text-[11px] font-mono select-none">
+              <div className="flex items-center gap-2 bg-[#0b0b0e] px-3 sm:px-4 py-2 border-t border-accent-blue text-white border-r border-white/5 cursor-pointer">
                 <FileCode size={12} className="text-yellow-600" />
                 <span>developer.json</span>
                 <span className="text-gray-600 hover:text-white ml-2 text-[9px]">×</span>
@@ -215,18 +215,18 @@ const About = () => {
             </div>
 
             {/* Code Lines Panel */}
-            <div className="flex-1 p-4 overflow-auto font-mono text-xs sm:text-sm leading-relaxed text-gray-300 relative select-text scrollbar-thin">
+            <div className="flex-1 p-2.5 sm:p-3 lg:p-4 overflow-auto font-mono text-[10px] sm:text-[11px] lg:text-sm leading-relaxed text-gray-300 relative select-text scrollbar-thin">
               
-              <div className="flex min-w-[500px]">
+              <div className="flex min-w-[430px] sm:min-w-[560px] lg:min-w-[640px] xl:min-w-0">
                 {/* Line Numbers Gutter */}
-                <div className="text-right text-gray-600 select-none pr-4 border-r border-white/5 flex flex-col w-9">
+                <div className="text-right text-gray-600 select-none pr-2 sm:pr-4 border-r border-white/5 flex flex-col w-7 sm:w-9">
                   {Array.from({ length: 44 }, (_, i) => (
                     <span key={i} className="h-6 flex items-center justify-end">{i + 1}</span>
                   ))}
                 </div>
 
                 {/* Actual Highlighted Content */}
-                <div className="pl-4 flex-1 flex flex-col">
+                <div className="pl-2.5 sm:pl-4 flex-1 flex flex-col">
                   
                   {/* Line 1 */}
                   <div className="h-6 flex items-center">
@@ -604,15 +604,15 @@ const About = () => {
             </div>
 
             {/* Bottom IDE Status Bar */}
-            <div className="bg-accent-blue text-[#08080b] py-1 px-4 flex justify-between items-center text-[10px] font-mono select-none">
-              <div className="flex items-center gap-3">
+            <div className="bg-accent-blue text-[#08080b] py-1 px-3 sm:px-4 flex justify-between items-center text-[9px] sm:text-[10px] font-mono select-none">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <span className="flex items-center gap-1 font-bold">
                   <GitBranch size={12} />
                   <span>main*</span>
                 </span>
-                <span className="opacity-70">Synchronized</span>
+                <span className="opacity-70 hidden sm:inline">Synchronized</span>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 sm:gap-4">
                 <span>UTF-8</span>
                 <span>JSON</span>
                 <span className="hidden sm:inline">Prettier ✅</span>
@@ -626,27 +626,6 @@ const About = () => {
 
       </motion.div>
 
-      {/* Cyber stats banner below VS Code Window */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
-        {[
-          { label: 'System Stack', value: 'MERN ARCHITECT' },
-          { label: 'Total Experience', value: `${totalExpMonths} MONTHS` },
-          { label: 'Time Coding', value: `${yearsOfCoding}+ YEARS` },
-          { label: 'Current Status', value: 'AVAILABLE_FOR_HIRE' }
-        ].map((stat, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-            className="p-4 rounded-xl border border-white/5 bg-white/[0.02] text-left"
-          >
-            <span className="text-[9px] font-mono uppercase tracking-wider text-gray-500 block mb-1">{stat.label}</span>
-            <span className="text-xs sm:text-sm font-bold font-orbitron text-accent-blue tracking-wide">{stat.value}</span>
-          </motion.div>
-        ))}
-      </div>
 
     </section>
   );

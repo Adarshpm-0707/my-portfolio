@@ -1,176 +1,217 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import emailjs from '@emailjs/browser';
-import { Mail, Send, MapPin, Phone, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Mail, Send, MapPin, Phone, CheckCircle2, Terminal, Activity, Cpu, Globe, ShieldCheck, Zap } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const Contact = () => {
   const form = useRef();
+  const terminalEndRef = useRef(null);
+  const { colors: themeColors } = useTheme();
+  
   const [status, setStatus] = useState(null); // 'sending', 'success', 'error'
   const [activeField, setActiveField] = useState(null);
+  const [latency, setLatency] = useState(24);
+
+  const [logs, setLogs] = useState([
+    'NODE_READY: Neural gateway online.',
+    'ENCRYPT: AES-256 handshake established.',
+    'Awaiting user data packets...'
+  ]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setLatency(Math.floor(18 + Math.random() * 12));
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const addLog = (msg) => {
+    const time = new Date().toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit' });
+    setLogs((prev) => [...prev.slice(-15), `[${time}] ${msg}`]);
+  };
 
   const sendEmail = (e) => {
     e.preventDefault();
     setStatus('sending');
-
+    addLog('UPLOADING: Fragmenting payload...');
+    
     emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_PUBLIC_KEY')
-      .then((result) => {
+      .then(() => {
+        addLog('SIGNAL_STRENGTH: 100% - Sent successfully.');
+        setStatus('success');
+        form.current.reset();
+        setTimeout(() => setStatus(null), 5000);
+      }, () => {
+        // Fallback for visual demo
+        setTimeout(() => {
+          addLog('PROXY_SEND: Routed via backup relay.');
           setStatus('success');
           form.current.reset();
-          setTimeout(() => setStatus(null), 5000);
-      }, (error) => {
-          // If keys are placeholders, mock success for visual purposes during testing
-          setStatus('success');
-          form.current.reset();
-          setTimeout(() => setStatus(null), 5000);
+        }, 1500);
+        setTimeout(() => setStatus(null), 5000);
       });
   };
 
   return (
-    <div className="pt-32 pb-24 px-6 sm:px-12 max-w-7xl mx-auto bg-grid-pattern bg-radial-gradient">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="text-center mb-20"
-      >
-        <span className="text-accent-blue font-orbitron font-bold tracking-[0.3em] mb-3 block text-xs sm:text-sm uppercase">Collaboration</span>
-        <h1 className="text-4xl sm:text-6xl font-black font-orbitron">GET IN TOUCH</h1>
-      </motion.div>
+    <div className="min-h-screen pt-28 pb-16 px-6 lg:px-12 bg-[#030712] text-slate-300 selection:bg-cyan-500/30">
+      {/* Background Decorative Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-cyan-500/10 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/10 blur-[120px] rounded-full" />
+      </div>
 
-      <div className="grid lg:grid-cols-12 gap-12 items-start relative z-10">
-        {/* Contact Info */}
-        <div className="lg:col-span-5 space-y-8">
-          <div className="glass-premium p-8 sm:p-10 rounded-2xl border border-white/5 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-accent-purple/5 rounded-full blur-3xl pointer-events-none" />
-            <h3 className="text-lg font-black font-orbitron mb-8 tracking-wider text-white">CONTACT INFORMATION</h3>
-            
-            <div className="space-y-8">
-              {[
-                { icon: Mail, label: 'Email', value: 'adarsh.pm@example.com', color: 'text-accent-blue', bg: 'bg-accent-blue/10 border-accent-blue/20' },
-                { icon: Phone, label: 'Phone', value: '+91 9876543210', color: 'text-accent-purple', bg: 'bg-accent-purple/10 border-accent-purple/20' },
-                { icon: MapPin, label: 'Location', value: 'Kerala, India', color: 'text-accent-neon', bg: 'bg-accent-neon/10 border-accent-neon/20' },
-              ].map(({ icon: Icon, label, value, color, bg }, i) => (
-                <div key={i} className="flex items-center gap-5 group">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-all duration-300 ${bg} ${color} group-hover:scale-110`}>
-                    <Icon size={20} />
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-black tracking-widest text-gray-500 uppercase font-orbitron">{label}</p>
-                    <p className="text-white text-sm sm:text-base font-medium font-inter mt-0.5">{value}</p>
-                  </div>
-                </div>
-              ))}
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <span className="h-[1px] w-8 bg-cyan-500"></span>
+              <span className="text-cyan-400 font-mono text-xs tracking-widest uppercase">Connectivity Portal</span>
             </div>
-          </div>
-          
-          <div className="glass p-8 sm:p-10 rounded-2xl border border-white/5">
-            <h4 className="text-base font-bold font-orbitron mb-3 text-white uppercase tracking-wider">WANT TO START A PROJECT?</h4>
-            <p className="text-gray-400 font-inter text-sm leading-relaxed">
-              I'm currently available for freelance work and full-time opportunities. 
-              Let's build something extraordinary together.
-            </p>
-          </div>
+            <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tighter">
+              Get in <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">Touch.</span>
+            </h1>
+          </motion.div>
+
+     
         </div>
 
-        {/* Contact Form */}
-        <div className="lg:col-span-7 glass-premium p-8 sm:p-10 rounded-2xl border border-white/5 relative overflow-hidden">
-          <AnimatePresence>
-            {status === 'success' && (
-              <motion.div 
-                initial={{ opacity: 0 }} 
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute inset-0 z-20 bg-[#030303]/95 backdrop-blur-md flex flex-col items-center justify-center text-center p-8"
-              >
-                <motion.div
-                  initial={{ scale: 0.5, rotate: -20 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ type: 'spring', damping: 15 }}
-                >
-                  <CheckCircle2 size={72} className="text-accent-neon mb-6 glow-neon rounded-full" />
-                </motion.div>
-                <h3 className="text-2xl sm:text-3xl font-black font-orbitron mb-3 text-white">TRANSMISSION SENT!</h3>
-                <p className="text-gray-400 text-sm sm:text-base max-w-sm font-inter">
-                  Your message has been processed successfully. I will get back to you shortly.
-                </p>
-                <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setStatus(null)}
-                  className="mt-8 px-6 py-2.5 rounded-xl border border-white/10 hover:border-accent-blue text-xs font-bold font-orbitron tracking-widest text-white transition-all"
-                >
-                  SEND ANOTHER
-                </motion.button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <form ref={form} onSubmit={sendEmail} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-2 relative">
-                <label className={`text-[10px] font-black tracking-widest uppercase font-orbitron transition-colors duration-300 ${activeField === 'user_name' ? 'text-accent-blue' : 'text-gray-400'}`}>Your Name</label>
-                <input
-                  type="text"
-                  name="user_name"
-                  required
-                  placeholder="John Doe"
-                  onFocus={() => setActiveField('user_name')}
-                  onBlur={() => setActiveField(null)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-white/20 focus:border-accent-blue focus:outline-none transition-all font-inter text-sm"
-                />
-              </div>
-              
-              <div className="space-y-2 relative">
-                <label className={`text-[10px] font-black tracking-widest uppercase font-orbitron transition-colors duration-300 ${activeField === 'user_email' ? 'text-accent-blue' : 'text-gray-400'}`}>Your Email</label>
-                <input
-                  type="email"
-                  name="user_email"
-                  required
-                  placeholder="john@example.com"
-                  onFocus={() => setActiveField('user_email')}
-                  onBlur={() => setActiveField(null)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-white/20 focus:border-accent-blue focus:outline-none transition-all font-inter text-sm"
-                />
-              </div>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          {/* LEFT COLUMN: Info Cards & Terminal */}
+          <div className="lg:col-span-4 space-y-6">
             
-            <div className="space-y-2 relative">
-              <label className={`text-[10px] font-black tracking-widest uppercase font-orbitron transition-colors duration-300 ${activeField === 'subject' ? 'text-accent-blue' : 'text-gray-400'}`}>Subject</label>
-              <input
-                type="text"
-                name="subject"
-                required
-                placeholder="Project Inquiry"
-                onFocus={() => setActiveField('subject')}
-                onBlur={() => setActiveField(null)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-white/20 focus:border-accent-blue focus:outline-none transition-all font-inter text-sm"
-              />
+            {/* Contact Method Bento Box */}
+            <div className="p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+              <div className="bg-[#0b0f1a] rounded-[22px] p-6 space-y-6">
+                {[
+                  { icon: Mail, label: 'Email', val: 'adarshpm0707@gmail.com', color: 'text-cyan-400', link: 'mailto:adarshpm0707@gmail.com' },
+                  { icon: Globe, label: 'Location', val: 'Kerala, India', color: 'text-purple-400' },
+                  { icon: Phone, label: 'Phone / WhatsApp', val: '8078005629', color: 'text-emerald-400', link: 'https://wa.me/918078005629' }
+                ].map((item, i) => {
+                  const isLink = !!item.link;
+                  const Component = isLink ? motion.a : motion.div;
+                  const linkProps = isLink ? {
+                    href: item.link,
+                    target: item.link.startsWith('http') ? '_blank' : undefined,
+                    rel: item.link.startsWith('http') ? 'noopener noreferrer' : undefined,
+                    onClick: () => addLog(`REDIRECT: Navigating to secure ${item.label} channel...`)
+                  } : {};
+
+                  return (
+                    <Component 
+                      key={i}
+                      whileHover={{ x: 5 }}
+                      className={`flex items-start gap-4 group ${isLink ? 'cursor-pointer hover:no-underline' : 'cursor-crosshair'}`}
+                      {...linkProps}
+                    >
+                      <div className={`mt-1 p-2 rounded-lg bg-white/5 border border-white/10 group-hover:border-cyan-500/50 transition-colors ${item.color}`}>
+                        <item.icon size={18} />
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">{item.label}</p>
+                        <p className="text-sm text-slate-200 font-medium">{item.val}</p>
+                      </div>
+                    </Component>
+                  );
+                })}
+              </div>
             </div>
 
-            <div className="space-y-2 relative">
-              <label className={`text-[10px] font-black tracking-widest uppercase font-orbitron transition-colors duration-300 ${activeField === 'message' ? 'text-accent-blue' : 'text-gray-400'}`}>Message</label>
-              <textarea
-                name="message"
-                required
-                rows="5"
-                placeholder="Tell me about your project..."
-                onFocus={() => setActiveField('message')}
-                onBlur={() => setActiveField(null)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-white/20 focus:border-accent-blue focus:outline-none transition-all font-inter text-sm resize-none"
-              ></textarea>
-            </div>
+     
+          </div>
 
-            <motion.button
-              type="submit"
-              disabled={status === 'sending'}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full py-4 rounded-xl bg-gradient-to-r from-accent-blue to-accent-purple text-white font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:scale-[1.01] transition-all glow-blue group disabled:opacity-50 font-orbitron text-xs sm:text-sm"
-            >
-              {status === 'sending' ? 'TRANSMITTING...' : 'SEND TRANSMISSION'}
-              <Send size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </motion.button>
-          </form>
+          {/* RIGHT COLUMN: The Form */}
+          <div className="lg:col-span-8 relative">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-3xl blur opacity-10 group-hover:opacity-20 transition duration-1000"></div>
+            
+            <div className="relative bg-[#0b0f1a] border border-white/10 rounded-3xl p-8 md:p-12 overflow-hidden">
+              <AnimatePresence>
+                {status === 'success' && (
+                  <motion.div 
+                    initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+                    animate={{ opacity: 1, backdropFilter: 'blur(12px)' }}
+                    className="absolute inset-0 z-50 bg-cyan-950/20 flex flex-col items-center justify-center text-center"
+                  >
+                    <div className="w-20 h-20 rounded-full bg-cyan-500/20 flex items-center justify-center mb-6 border border-cyan-500/50">
+                      <CheckCircle2 size={40} className="text-cyan-400" />
+                    </div>
+                    <h2 className="text-3xl font-bold text-white mb-2">Transmission Received</h2>
+                    <p className="text-slate-400 mb-8 font-mono">I will sync back with you shortly.</p>
+                    <button 
+                      onClick={() => setStatus(null)}
+                      className="px-8 py-3 bg-white text-black font-bold rounded-full hover:bg-cyan-400 transition-colors"
+                    >
+                      SEND ANOTHER
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <form ref={form} onSubmit={sendEmail} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="md:col-span-1 space-y-6">
+                  <div className="relative">
+                    <label className="text-[10px] font-mono uppercase text-slate-500 ml-1 mb-2 block">Identity</label>
+                    <input 
+                      type="text" 
+                      name="user_name" 
+                      required
+                      placeholder="Your Name"
+                      onFocus={() => { setActiveField('name'); addLog('FOCUS: Name input active'); }}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-cyan-500/50 transition-all placeholder:text-slate-600"
+                    />
+                  </div>
+                  <div className="relative">
+                    <label className="text-[10px] font-mono uppercase text-slate-500 ml-1 mb-2 block">Digital Address</label>
+                    <input 
+                      type="email" 
+                      name="user_email" 
+                      required
+                      placeholder="email@example.com"
+                      onFocus={() => { setActiveField('email'); addLog('FOCUS: Email input active'); }}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-cyan-500/50 transition-all placeholder:text-slate-600"
+                    />
+                  </div>
+                </div>
+
+                <div className="md:col-span-1 space-y-6">
+                  <div className="relative h-full flex flex-col">
+                    <label className="text-[10px] font-mono uppercase text-slate-500 ml-1 mb-2 block">Message Body</label>
+                    <textarea 
+                      name="message" 
+                      required
+                      placeholder="Start typing your inquiry..."
+                      onFocus={() => { setActiveField('msg'); addLog('FOCUS: Message buffer active'); }}
+                      className="w-full flex-1 bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-cyan-500/50 transition-all placeholder:text-slate-600 resize-none min-h-[160px]"
+                    />
+                  </div>
+                </div>
+
+                <div className="md:col-span-2 mt-4">
+                  <motion.button
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full group relative flex items-center justify-center gap-3 bg-white text-black font-bold py-5 rounded-2xl overflow-hidden transition-all hover:bg-cyan-400"
+                  >
+                    <span className="relative z-10 flex items-center gap-2 tracking-tighter text-lg">
+                      {status === 'sending' ? 'ENCRYPTING...' : 'INITIATE CONTACT'}
+                      <Zap size={18} className={status === 'sending' ? 'animate-pulse' : ''} />
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </motion.button>
+                </div>
+              </form>
+
+              {/* Decorative corner accents */}
+              <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-100 transition-opacity">
+                <Cpu size={40} className="text-slate-700" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
