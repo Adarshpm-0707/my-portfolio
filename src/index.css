@@ -26,6 +26,7 @@
   --accent-blue-glow-hover-shadow: rgba(45, 212, 191, 0.15);
   --accent-blue-glow-hover-shadow-deep: rgba(45, 212, 191, 0.15);
   --accent-purple-glow-hover: rgba(244, 184, 96, 0.28);
+  --logo-filter: none;
 }
 
 [data-theme="violet"] {
@@ -51,6 +52,7 @@
   --accent-blue-glow-hover-shadow: rgba(168, 85, 247, 0.15);
   --accent-blue-glow-hover-shadow-deep: rgba(168, 85, 247, 0.15);
   --accent-purple-glow-hover: rgba(99, 102, 241, 0.28);
+  --logo-filter: hue-rotate(50deg) saturate(1.2);
 }
 
 [data-theme="amber"] {
@@ -76,6 +78,7 @@
   --accent-blue-glow-hover-shadow: rgba(245, 158, 11, 0.15);
   --accent-blue-glow-hover-shadow-deep: rgba(245, 158, 11, 0.15);
   --accent-purple-glow-hover: rgba(249, 115, 22, 0.28);
+  --logo-filter: hue-rotate(180deg) saturate(1.5);
 }
 
 [data-theme="emerald"] {
@@ -101,6 +104,7 @@
   --accent-blue-glow-hover-shadow: rgba(16, 185, 129, 0.15);
   --accent-blue-glow-hover-shadow-deep: rgba(16, 185, 129, 0.15);
   --accent-purple-glow-hover: rgba(132, 204, 22, 0.28);
+  --logo-filter: hue-rotate(300deg) saturate(1.2);
 }
 
 [data-theme="crimson"] {
@@ -126,6 +130,85 @@
   --accent-blue-glow-hover-shadow: rgba(225, 29, 72, 0.15);
   --accent-blue-glow-hover-shadow-deep: rgba(225, 29, 72, 0.15);
   --accent-purple-glow-hover: rgba(244, 63, 94, 0.28);
+  --logo-filter: hue-rotate(130deg) saturate(1.5);
+}
+
+[data-theme="aqua"] {
+  --color-bg-primary: #02080c;
+  --color-bg-secondary: #05121b;
+  --accent-blue: #0ea5e9;
+  --accent-purple: #06b6d4;
+  --accent-neon: #14b8a6;
+  --accent-pink: #6366f1;
+
+  --transition-stroke-1: #02080c;
+  --transition-stroke-2: var(--accent-blue);
+
+  --bg-radial-glow: rgba(14, 165, 233, 0.04);
+  --orb-color-1: rgba(14, 165, 233, 0.16);
+  --orb-color-2: rgba(6, 182, 212, 0.12);
+
+  --accent-blue-glow: rgba(14, 165, 233, 0.25);
+  --accent-purple-glow: rgba(6, 182, 212, 0.22);
+  --accent-neon-glow: rgba(20, 184, 166, 0.2);
+
+  --accent-blue-glow-hover: rgba(14, 165, 233, 0.4);
+  --accent-blue-glow-hover-shadow: rgba(14, 165, 233, 0.15);
+  --accent-blue-glow-hover-shadow-deep: rgba(14, 165, 233, 0.15);
+  --accent-purple-glow-hover: rgba(6, 182, 212, 0.28);
+  --logo-filter: hue-rotate(20deg) saturate(1.2);
+}
+
+[data-theme="sakura"] {
+  --color-bg-primary: #090205;
+  --color-bg-secondary: #15050b;
+  --accent-blue: #ec4899;
+  --accent-purple: #f43f5e;
+  --accent-neon: #d946ef;
+  --accent-pink: #a855f7;
+
+  --transition-stroke-1: #090205;
+  --transition-stroke-2: var(--accent-blue);
+
+  --bg-radial-glow: rgba(236, 72, 153, 0.04);
+  --orb-color-1: rgba(236, 72, 153, 0.16);
+  --orb-color-2: rgba(244, 63, 94, 0.12);
+
+  --accent-blue-glow: rgba(236, 72, 153, 0.25);
+  --accent-purple-glow: rgba(244, 63, 94, 0.22);
+  --accent-neon-glow: rgba(217, 70, 239, 0.2);
+
+  --accent-blue-glow-hover: rgba(236, 72, 153, 0.4);
+  --accent-blue-glow-hover-shadow: rgba(236, 72, 153, 0.15);
+  --accent-blue-glow-hover-shadow-deep: rgba(236, 72, 153, 0.15);
+  --accent-purple-glow-hover: rgba(244, 63, 94, 0.28);
+  --logo-filter: hue-rotate(90deg) saturate(1.4);
+}
+
+[data-theme="cyberpunk"] {
+  --color-bg-primary: #0c0c02;
+  --color-bg-secondary: #1a1a05;
+  --accent-blue: #eab308;
+  --accent-purple: #06b6d4;
+  --accent-neon: #a855f7;
+  --accent-pink: #ec4899;
+
+  --transition-stroke-1: #0c0c02;
+  --transition-stroke-2: var(--accent-blue);
+
+  --bg-radial-glow: rgba(234, 179, 8, 0.04);
+  --orb-color-1: rgba(234, 179, 8, 0.16);
+  --orb-color-2: rgba(6, 182, 212, 0.12);
+
+  --accent-blue-glow: rgba(234, 179, 8, 0.25);
+  --accent-purple-glow: rgba(6, 182, 212, 0.22);
+  --accent-neon-glow: rgba(168, 85, 247, 0.2);
+
+  --accent-blue-glow-hover: rgba(234, 179, 8, 0.4);
+  --accent-blue-glow-hover-shadow: rgba(234, 179, 8, 0.15);
+  --accent-blue-glow-hover-shadow-deep: rgba(234, 179, 8, 0.15);
+  --accent-purple-glow-hover: rgba(6, 182, 212, 0.28);
+  --logo-filter: hue-rotate(200deg) saturate(1.6);
 }
 
 @theme {
@@ -1366,4 +1449,9 @@ html.lenis { height: auto; }
   #about .min-w-\[500px\] {
     min-width: 390px;
   }
+}
+
+.theme-logo {
+  filter: var(--logo-filter, none);
+  transition: filter 0.5s ease;
 }

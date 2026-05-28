@@ -53,6 +53,36 @@ export const themesConfig = {
     accentPink: '#ec4899',
     swatches: ['#e11d48', '#f43f5e', '#f97316'],
   },
+  aqua: {
+    name: 'Ocean Aqua',
+    primary: '#02080c',
+    secondary: '#05121b',
+    accentBlue: '#0ea5e9',
+    accentPurple: '#06b6d4',
+    accentNeon: '#14b8a6',
+    accentPink: '#6366f1',
+    swatches: ['#0ea5e9', '#06b6d4', '#14b8a6'],
+  },
+  sakura: {
+    name: 'Sakura Pink',
+    primary: '#090205',
+    secondary: '#15050b',
+    accentBlue: '#ec4899',
+    accentPurple: '#f43f5e',
+    accentNeon: '#d946ef',
+    accentPink: '#a855f7',
+    swatches: ['#ec4899', '#f43f5e', '#d946ef'],
+  },
+  cyberpunk: {
+    name: 'Cyberpunk Gold',
+    primary: '#0c0c02',
+    secondary: '#1a1a05',
+    accentBlue: '#eab308',
+    accentPurple: '#06b6d4',
+    accentNeon: '#a855f7',
+    accentPink: '#ec4899',
+    swatches: ['#eab308', '#06b6d4', '#a855f7'],
+  },
 };
 
 export const ThemeProvider = ({ children }) => {

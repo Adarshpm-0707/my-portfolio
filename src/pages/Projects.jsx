@@ -5,6 +5,10 @@ import Stack from '../components/ui/Stack';
 import aleefImg from '../assets/aleef global.png';
 import homerocksImg from '../assets/homerocks.png';
 import najmcareImg from '../assets/najmcare.png';
+import syncImg from '../assets/sync.png';
+import deepstaqImg from '../assets/deepstaq.png';
+import kyealImg from '../assets/kyeal.png';
+import smartWordImg from '../assets/smartword.png';
 
 const Github = (props) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -35,6 +39,34 @@ const projects = [
     description: 'A healthcare appointment and medical record management system for clinics and patients.',
     link: 'https://najmcare.me/',
   },
+  {
+    title: 'Sync',
+    image: syncImg,
+    tags: ['React', 'Tailwind', 'Node.js'],
+    description: 'An interactive electronic product website for Sync, showcasing features, specs, and real-time controller sync.',
+    link: 'https://sync-2a7o.vercel.app/',
+  },
+  {
+    title: 'Deepstaq',
+    image: deepstaqImg,
+    tags: ['React', 'Tailwind', 'Node.js'],
+    description: 'An AI/ML professional diploma platform offering structured paths, projects, and custom slot booking for learning AI.',
+    link: '#',
+  },
+  {
+    title: 'Kyeal',
+    image: kyealImg,
+    tags: ['React', 'Tailwind', 'Node.js', 'Firebase'],
+    description: 'India\'s first DNA-based preventive healthcare portal delivering genetics-decoded meal protocols and consultation.',
+    link: '#',
+  },
+  {
+    title: 'Smart Word',
+    image: smartWordImg,
+    tags: ['React', 'Tailwind', 'Node.js', 'Vercel'],
+    description: 'A smart vocabulary learning application using interactive flashcards, randomized words, study logs, and personalized goals.',
+    link: 'https://smart-word-bag6.vercel.app/',
+  },
 ];
 
 const Projects = () => {
@@ -43,14 +75,22 @@ const Projects = () => {
 
   // Pre-generate cards for the Stack component
   const stackCards = useMemo(() => {
+    const cardColors = [
+      { theme: 'border-cyan-500/30', glow: 'shadow-cyan-500/10', dot: 'bg-cyan-400' },
+      { theme: 'border-purple-500/30', glow: 'shadow-purple-500/10', dot: 'bg-purple-400' },
+      { theme: 'border-pink-500/30', glow: 'shadow-pink-500/10', dot: 'bg-pink-400' },
+      { theme: 'border-emerald-500/30', glow: 'shadow-emerald-500/10', dot: 'bg-emerald-400' },
+      { theme: 'border-blue-500/30', glow: 'shadow-blue-500/10', dot: 'bg-blue-400' },
+      { theme: 'border-amber-500/30', glow: 'shadow-amber-500/10', dot: 'bg-amber-400' },
+    ];
+
     return projects.map((project, index) => {
-      const themeColor = index === 0 ? 'border-cyan-500/30' : index === 1 ? 'border-purple-500/30' : 'border-pink-500/30';
-      const glowColor = index === 0 ? 'shadow-cyan-500/10' : index === 1 ? 'shadow-purple-500/10' : 'shadow-pink-500/10';
+      const scheme = cardColors[index % cardColors.length];
 
       return (
         <div
           key={index}
-          className={`w-full h-full relative bg-[#0a0d16]/95 backdrop-blur-md border ${themeColor} shadow-2xl ${glowColor} flex flex-col overflow-hidden group select-none rounded-2xl`}
+          className={`w-full h-full relative bg-[#0a0d16]/95 backdrop-blur-md border ${scheme.theme} shadow-2xl ${scheme.glow} flex flex-col overflow-hidden group select-none rounded-2xl`}
         >
           {/* Aspect-Video (16:9) Project Image Header */}
           <div className="w-full aspect-video overflow-hidden bg-slate-900/60 border-b border-white/5 relative z-0">
@@ -66,7 +106,7 @@ const Projects = () => {
           <div className="flex-1 p-6 flex flex-col justify-between w-full relative z-10 bg-slate-950/20">
             <div>
               <div className="flex items-center gap-1.5 mb-1.5">
-                <span className={`w-1.5 h-1.5 rounded-full ${index === 0 ? 'bg-cyan-400 animate-pulse' : index === 1 ? 'bg-purple-400' : 'bg-pink-400'}`} />
+                <span className={`w-1.5 h-1.5 rounded-full ${scheme.dot} animate-pulse`} />
                 <span className="text-[9px] tracking-[0.25em] uppercase font-bold text-slate-400 font-sans">
                   Project 0{index + 1}
                 </span>

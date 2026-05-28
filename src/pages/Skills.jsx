@@ -1,3 +1,6 @@
+/* ══════════════════════════════════════════════════
+   TECH LOGO COMPONENTS (SVG PATHS)
+══════════════════════════════════════════════════ */
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -10,10 +13,8 @@ import {
 } from 'lucide-react';
 import ParticleText from '../components/ui/ParticleText';
 import { useTheme } from '../context/ThemeContext';
+import Skills3DScene from '../components/ui/Skills3DScene';
 
-/* ══════════════════════════════════════════════════
-   TECH LOGO COMPONENTS (SVG PATHS)
-══════════════════════════════════════════════════ */
 const TechLogos = {
   React: () => (
     <svg viewBox="-11.5 -10.23174 23 20.46348" className="w-12 h-12">
@@ -111,57 +112,19 @@ const TechVisualizer = ({ activeTab }) => {
       <motion.div 
         animate={{ rotate: 360 }}
         transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-        className="absolute w-80 h-80 border border-dashed rounded-full opacity-20"
+        className="absolute w-80 h-80 border border-dashed rounded-full opacity-20 pointer-events-none"
         style={{ borderColor: color }}
       />
       <motion.div 
         animate={{ rotate: -360 }}
         transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        className="absolute w-64 h-64 border-2 border-dotted rounded-full opacity-10"
+        className="absolute w-64 h-64 border-2 border-dotted rounded-full opacity-10 pointer-events-none"
         style={{ borderColor: color }}
       />
 
-      {/* Center Hexagon & Logo Container */}
-      <div className="relative flex items-center justify-center">
-        {/* Animated Hexagon Border */}
-        <motion.div 
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute"
-        >
-          <svg width="180" height="180" viewBox="0 0 100 100">
-            <polygon 
-              points="50,5 95,25 95,75 50,95 5,75 5,25" 
-              fill="transparent" 
-              stroke={color} 
-              strokeWidth="0.5"
-              strokeDasharray="10 5"
-            />
-          </svg>
-        </motion.div>
-
-        {/* The Hero Logo */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab.id}
-            initial={{ scale: 0, opacity: 0, rotate: -45 }}
-            animate={{ scale: 1, opacity: 1, rotate: 0 }}
-            exit={{ scale: 0, opacity: 0, rotate: 45 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            className="z-20 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
-            style={{ color: color }}
-          >
-            {activeTab.mainLogo}
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Glitch/Scan Effect */}
-        <motion.div 
-          animate={{ top: ['-20%', '120%'], opacity: [0, 1, 0] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute w-32 h-[1px] blur-[1px] z-30 pointer-events-none"
-          style={{ backgroundColor: color }}
-        />
+      {/* 3D Morphing interactive shape */}
+      <div className="w-80 h-80 z-10 flex items-center justify-center scale-90 sm:scale-100">
+        <Skills3DScene color={color} />
       </div>
 
       {/* Orbiting Tech Labels */}
@@ -336,48 +299,8 @@ const Skills = () => {
         </div>
 
         {/* Compact Visualizer Block */}
-        <div className="w-full h-48 relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.01] backdrop-blur-sm flex items-center justify-center">
-          <div className="absolute inset-0 opacity-10 pointer-events-none" 
-               style={{ backgroundImage: `radial-gradient(${activeTab.color} 1px, transparent 1px)`, backgroundSize: '24px 24px' }} />
-          
-          <motion.div 
-            animate={{ rotate: 360 }}
-            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-            className="absolute w-40 h-40 border border-dashed rounded-full opacity-10"
-            style={{ borderColor: activeTab.color }}
-          />
-
-          {/* Center Hex and Logo */}
-          <div className="relative flex items-center justify-center scale-90">
-            <motion.div 
-              animate={{ rotate: 360 }}
-              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-              className="absolute"
-            >
-              <svg width="110" height="110" viewBox="0 0 100 100">
-                <polygon 
-                  points="50,5 95,25 95,75 50,95 5,75 5,25" 
-                  fill="transparent" 
-                  stroke={activeTab.color} 
-                  strokeWidth="0.8"
-                  strokeDasharray="6 4"
-                />
-              </svg>
-            </motion.div>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab.id}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0, opacity: 0 }}
-                className="z-20 text-white"
-                style={{ color: activeTab.color }}
-              >
-                {activeTab.mainLogo}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+        <div className="w-full h-64 relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.01] backdrop-blur-sm flex items-center justify-center">
+          <TechVisualizer activeTab={activeTab} />
         </div>
 
         {/* Skills Grid */}

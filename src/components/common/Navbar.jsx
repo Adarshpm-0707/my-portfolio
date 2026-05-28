@@ -3,6 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowRight, Palette } from 'lucide-react';
 import { useTheme, themesConfig } from '../../context/ThemeContext';
+import logoImg from '../../assets/logo.png';
+
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -35,15 +37,11 @@ const Navbar = () => {
         }`}
       >
         <div className="flex items-center justify-between">
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative">
-              <div className="absolute inset-0 bg-accent-blue/20 blur-lg rounded-full group-hover:bg-accent-blue/40 transition-all" />
-              
+            <div className="relative flex items-center">
+        
+              <img src={logoImg} alt="Logo" className="theme-logo relative h-11 w-auto object-contain sm:h-14" />
             </div>
-            <span className="text-white font-orbitron font-bold tracking-tighter text-base sm:text-xl">
-              AASSHH<span className="text-accent-blue">.DEV</span>
-            </span>
           </Link>
 
           {/* Desktop Links */}

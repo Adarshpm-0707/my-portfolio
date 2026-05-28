@@ -141,7 +141,7 @@ const Home = () => {
               SELECTED WORKS
             </span>
             <h2 className="text-3xl sm:text-5xl font-black font-orbitron tracking-tight">
-              BEYOND CODE
+              PROJECTS
             </h2>
           </div>
           <Link
