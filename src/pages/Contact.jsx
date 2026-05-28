@@ -36,19 +36,32 @@ const Contact = () => {
     setStatus('sending');
     addLog('UPLOADING: Fragmenting payload...');
     
-    emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_PUBLIC_KEY')
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      console.warn("EmailJS credentials missing. Falling back to demo mode.");
+      addLog('WARNING: Missing API Keys. Using simulation...');
+      setTimeout(() => {
+        addLog('SIMULATION: Routed via backup demo relay.');
+        setStatus('success');
+        form.current.reset();
+      }, 1500);
+      setTimeout(() => setStatus(null), 5000);
+      return;
+    }
+    
+    emailjs.sendForm(serviceId, templateId, form.current, publicKey)
       .then(() => {
         addLog('SIGNAL_STRENGTH: 100% - Sent successfully.');
         setStatus('success');
         form.current.reset();
         setTimeout(() => setStatus(null), 5000);
-      }, () => {
-        // Fallback for visual demo
-        setTimeout(() => {
-          addLog('PROXY_SEND: Routed via backup relay.');
-          setStatus('success');
-          form.current.reset();
-        }, 1500);
+      }, (error) => {
+        console.error("EmailJS sending failed:", error);
+        addLog(`ERROR: Transmission failed: ${error.text || 'Unknown error'}`);
+        setStatus('error');
         setTimeout(() => setStatus(null), 5000);
       });
   };

@@ -90,9 +90,9 @@ const About = () => {
         className="mb-8 sm:mb-12 text-center lg:text-left"
       >
         <span className="text-accent-blue font-orbitron font-bold tracking-[0.3em] mb-2 block text-xs sm:text-sm uppercase">
-          // 02 // IDENTITY_DATABASE
+          // 02 // ABOUT ME
         </span>
-        <h2 className="text-[1.85rem] leading-tight sm:text-5xl font-black font-orbitron text-white break-words">SYSTEM_BACKGROUND</h2>
+       
       </motion.div>
 
       {/* VS Code Window Container */}
